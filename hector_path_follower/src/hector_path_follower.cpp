@@ -135,12 +135,12 @@ namespace pose_follower {
     tf::Stamped<tf::Pose> target_pose;
     tf::poseStampedMsgToTF(global_plan_[current_waypoint_], target_pose);
 
-    ROS_DEBUG("HectorPathFollower: current robot pose %f %f ==> %f", robot_pose.getOrigin().x(), robot_pose.getOrigin().y(), tf::getYaw(robot_pose.getRotation()));
-    ROS_DEBUG("HectorPathFollower: target robot pose %f %f ==> %f", target_pose.getOrigin().x(), target_pose.getOrigin().y(), tf::getYaw(target_pose.getRotation()));
+    ROS_DEBUG("HectorPathFollower: current robot pose (%f, %f, %f)", robot_pose.getOrigin().x(), robot_pose.getOrigin().y(), tf::getYaw(robot_pose.getRotation()));
+    ROS_DEBUG("HectorPathFollower: target robot pose (%f, %f, %f)", target_pose.getOrigin().x(), target_pose.getOrigin().y(), tf::getYaw(target_pose.getRotation()));
 
     //get the difference between the two poses
     geometry_msgs::Twist diff = diff2D(target_pose, robot_pose);
-    ROS_DEBUG("HectorPathFollower: diff %f %f ==> %f", diff.linear.x, diff.linear.y, diff.angular.z);
+    ROS_DEBUG("HectorPathFollower: pose diff (%f, %f, %f)", diff.linear.x, diff.linear.y, diff.angular.z);
 
     geometry_msgs::Twist limit_vel = limitTwist(diff);
 
@@ -178,17 +178,18 @@ namespace pose_follower {
     bool in_goal_position = false;
     while(fabs(diff.linear.x) <= tolerance_trans_ &&
           fabs(diff.linear.y) <= tolerance_trans_ &&
-    fabs(diff.angular.z) <= tolerance_rot_)
+          fabs(diff.angular.z) <= tolerance_rot_)
     {
       if(current_waypoint_ < global_plan_.size() - 1)
       {
-  current_waypoint_++;
+        current_waypoint_++;
         tf::poseStampedMsgToTF(global_plan_[current_waypoint_], target_pose);
         diff = diff2D(target_pose, robot_pose);
       }
       else
       {
-        ROS_INFO("Reached goal: %d", current_waypoint_);
+        ROS_INFO_THROTTLE(10.0, "[hector_path_follower] Reached goal: %d",
+                                                        current_waypoint_);
         in_goal_position = true;
         break;
       }
@@ -300,9 +301,11 @@ namespace pose_follower {
 
     //we want to check for whether or not we're desired to rotate in place
     if(sqrt(twist.linear.x * twist.linear.x + twist.linear.y * twist.linear.y) < in_place_trans_vel_){
-      if (fabs(res.angular.z) < min_in_place_vel_th_) res.angular.z = min_in_place_vel_th_ * sign(res.angular.z);
+      if (fabs(res.angular.z) < min_in_place_vel_th_)
+        res.angular.z = min_in_place_vel_th_ * sign(res.angular.z);
       res.linear.x = 0.0;
       res.linear.y = 0.0;
+      ROS_INFO_THROTTLE(5.0, "[HectorPathFollower] Close to target. Rotating in place ...");
     }
 
     ROS_DEBUG("Angular command %f", res.angular.z);

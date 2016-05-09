@@ -183,7 +183,7 @@ bool HectorExplorationPlanner::makePlan(const geometry_msgs::PoseStamped &start,
   costmap_->worldToMap(adjusted_goal.pose.position.x,adjusted_goal.pose.position.y,mx,my);
   previous_goal_ = costmap_->getIndex(mx,my);
 
-  ROS_INFO("[hector_exploration_planner] planning: plan has been found! plansize: %u ", (unsigned int)plan.size());
+  ROS_INFO("[hector_exploration_planner] planning: plan has been found! plan size: %u ", (unsigned int)plan.size());
   return true;
 }
 
@@ -249,7 +249,7 @@ bool HectorExplorationPlanner::doExploration(const geometry_msgs::PoseStamped &s
   }
 
 
-  ROS_INFO("[hector_exploration_planner] exploration: plan to a frontier has been found! plansize: %u", (unsigned int)plan.size());
+  ROS_INFO("[hector_exploration_planner] exploration: plan to a frontier has been found! plan size: %u", (unsigned int)plan.size());
   return true;
 }
 
@@ -339,7 +339,7 @@ bool HectorExplorationPlanner::doInnerExploration(const geometry_msgs::PoseStamp
     last_mode_ = INNER_EXPLORE;
   }
 
-  ROS_INFO("[hector_exploration_planner] inner-exploration: plan to an inner-frontier has been found! plansize: %u", (unsigned int)plan.size());
+  ROS_INFO("[hector_exploration_planner] inner-exploration: plan to an inner-frontier has been found! plan size: %u", (unsigned int)plan.size());
   return true;
 }
 
@@ -550,7 +550,7 @@ bool HectorExplorationPlanner::doAlternativeExploration(const geometry_msgs::Pos
   costmap_->worldToMap(this_goal.pose.position.x,this_goal.pose.position.y,mx,my);
   previous_goal_ = costmap_->getIndex(mx,my);
 
-  ROS_INFO("[hector_exploration_planner] alternative exploration: plan to a frontier has been found! plansize: %u ", (unsigned int)plan.size());
+  ROS_INFO("[hector_exploration_planner] alternative exploration: plan to a frontier has been found! plan size: %u ", (unsigned int)plan.size());
   return true;
 }
 
@@ -693,7 +693,7 @@ bool HectorExplorationPlanner::exploreWalls(const geometry_msgs::PoseStamped &st
         if(plansize > 0 ){
           plan.resize(plansize);
         }
-        ROS_DEBUG("[hector_exploration_planner] wall-follow: END: exploreWalls. Plansize %d", (int)plan.size());
+        ROS_DEBUG("[hector_exploration_planner] wall-follow: END: exploreWalls. Plan size %d", (int)plan.size());
         return !plan.empty();
       }
 
@@ -762,7 +762,7 @@ bool HectorExplorationPlanner::exploreWalls(const geometry_msgs::PoseStamped &st
     currentPoint=nextPoint;
     k++;
   }
-  ROS_DEBUG("[hector_exploration_planner] wall-follow: END: exploreWalls. Plansize %d", (int)plan.size());
+  ROS_DEBUG("[hector_exploration_planner] wall-follow: END: exploreWalls. Plan size %d", (int)plan.size());
   return !plan.empty();
 }
 
@@ -1078,7 +1078,7 @@ bool HectorExplorationPlanner::getTrajectory(const geometry_msgs::PoseStamped &s
     maxDelta = 0;
   }
 
-  ROS_DEBUG("[hector_exploration_planner] END: getTrajectory. Plansize %u", (unsigned int)plan.size());
+  ROS_DEBUG("[hector_exploration_planner] END: getTrajectory. Plan size %u", (unsigned int)plan.size());
   return !plan.empty();
 }
 
@@ -1978,4 +1978,3 @@ inline int HectorExplorationPlanner::downleft(int point){
 //        }
 
 //    }
-
