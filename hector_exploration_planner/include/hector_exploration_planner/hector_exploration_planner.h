@@ -32,13 +32,17 @@
 #include <ros/ros.h>
 #include <costmap_2d/costmap_2d.h>
 #include <costmap_2d/costmap_2d_ros.h>
-#include <geometry_msgs/PoseStamped.h>
+// #include <geometry_msgs/PoseStamped.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf2/utils.h>
 
 #include <dynamic_reconfigure/server.h>
 
 #include <hector_exploration_planner/exploration_transform_vis.h>
 
 #include <boost/shared_array.hpp>
+
+#define UNSIGNED_DIFF(a,b) ((a > b) ? (a - b) : (b - a))
 
 namespace hector_exploration_planner{
 
